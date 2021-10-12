@@ -1,5 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:g_books/presentation/screens/sign_in/sign_in_page.dart';
+import 'package:provider/provider.dart';
+
+import 'presentation/screens/home/home_page.dart';
+import 'presentation/screens/sign_in/sign_in_page.dart';
+import 'services/auth.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -11,6 +16,29 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
-    return const SignInPage();
+    final auth = Provider.of<AuthBase>(context, listen: false);
+
+    return StreamBuilder<User?>(
+      stream: auth.authStateChanges(),
+      builder: (_, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          final user = snapshot.data;
+          if (user == null) {
+            return const SignInPage();
+          }
+
+          // return Provider<Database>(
+          //   create: (_) => FireStoreDatabase(uid: user.uid),
+          //   child: HomePage.create(context),
+          // );
+          return HomePage.create(context);
+        }
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
+    );
   }
 }

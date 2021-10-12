@@ -14,6 +14,7 @@ class SignInTextField extends CustomTextFormField {
     TextInputType? keyboardType,
     bool enabled = true,
     bool obscureText = false,
+    int? maxLines = 1,
   }) : super(
           key: key,
           borderRadius: 30.0,
@@ -28,5 +29,6 @@ class SignInTextField extends CustomTextFormField {
           obscureText: obscureText,
           textInputAction: textInputAction,
           keyboardType: keyboardType,
+          maxLines: maxLines,
         );
 }
