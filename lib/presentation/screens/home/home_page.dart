@@ -9,8 +9,24 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 15.0),
+              Text(
+                'Explore thousands of books on the go',
+                style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      fontSize: 26.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
