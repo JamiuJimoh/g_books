@@ -23,9 +23,14 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           primaryColor: Colors.lightBlue[300],
+          appBarTheme: const AppBarTheme(
+            centerTitle: true,
+            elevation: 0.5,
+            iconTheme: IconThemeData(color: Colors.black54),
+            color: Colors.white,
+          ),
           textTheme: GoogleFonts.latoTextTheme(
             Theme.of(context).textTheme,
-            
           ),
         ),
         home: const LandingPage(),
