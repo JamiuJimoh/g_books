@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:g_books/models/book.dart';
-import 'package:g_books/presentation/custom_widgets/custom_elevated_button.dart';
-import 'package:g_books/presentation/custom_widgets/image_container.dart';
+import '../../../models/book.dart';
+import '../../custom_widgets/image_container.dart';
+import 'widgets/add_to_fav_button.dart';
 
 class BookDetailsPage extends StatefulWidget {
   const BookDetailsPage({Key? key, required this.book}) : super(key: key);
@@ -33,65 +33,10 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const CustomElevatedButton(
-        child: Text('Add to Favorites'),
-        height: 50.0,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 12.0),
+        child: AddToFavButton(onPressed: () => print('object')),
       ),
-      // body: CustomScrollView(
-      //   slivers: [
-      //     SliverAppBar(
-      //       pinned: true,
-      //       expandedHeight: _height,
-      //       flexibleSpace: Stack(
-      //         clipBehavior: Clip.none,
-      //         children: [
-      //           Positioned(
-      //             child: Container(
-      //               color: Colors.red,
-      //               height: 100.0,
-      //               width: 100.0,
-      //             ),
-      //             bottom: -50.0,
-      //           ),
-      //           FlexibleSpaceBar(
-      //             title: Text(widget.book.title),
-      //           ),
-      //         ],
-      //       ),
-      // flexibleSpace: FlexibleSpaceBar(
-      //   title: Text(widget.book.title),
-      //   centerTitle: true,
-      //   background: Container(
-      //     decoration: BoxDecoration(
-      //       borderRadius: const BorderRadius.only(
-      //         bottomLeft: Radius.circular(35.0),
-      //         bottomRight: Radius.circular(35.0),
-      //       ),
-      //       image: DecorationImage(
-      //         image: NetworkImage(widget.book.thumbnail),
-      //         fit: BoxFit.cover,
-      //       ),
-      //     ),
-      //     // child: Image.network(
-      //     //   widget.book.thumbnail,
-      //     //   fit: BoxFit.cover,
-      //     // ),
-      //   ),
-      // ),
-      // ),
-      // const SliverToBoxAdapter(child: SizedBox(height: padVal)),
-      // SliverPadding(
-      //   padding:
-      //       const EdgeInsets.symmetric(vertical: 10.0, horizontal: padVal),
-      //   sliver: SliverToBoxAdapter(child: _bookInfo()),
-      // ),
-      // const SliverToBoxAdapter(child: SizedBox(height: 200.0)),
-      // const SliverToBoxAdapter(child: SizedBox(height: 200.0)),
-      // const SliverToBoxAdapter(child: SizedBox(height: 200.0)),
-      // const SliverToBoxAdapter(child: SizedBox(height: 200.0)),
-      // const SliverToBoxAdapter(child: SizedBox(height: 200.0)),
-      //     ],
-      //   ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -169,8 +114,28 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
               padding: const EdgeInsets.symmetric(
                   vertical: 10.0, horizontal: _padVal),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ..._bookInfo(),
+                  const SizedBox(height: 20.0),
+                  const Text(
+                    'Synopsis',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  Text(
+                    widget.book.description,
+                    style: const TextStyle(
+                      color: Color(0xFF3F3F3F),
+
+                      fontSize: 18.0,
+                      // fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -181,14 +146,19 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
   }
 
   List<Widget> _bookInfo() {
-    const style = TextStyle(
-      fontSize: 17.0,
-      fontWeight: FontWeight.bold,
-    );
     const subStyle = TextStyle(
       fontSize: 14.0,
     );
     return [
+      Row(
+        children: [
+          const Icon(Icons.category),
+          const SizedBox(width: 6.0),
+          Text(widget.book.category, style: subStyle),
+          const SizedBox(width: 4.0),
+        ],
+      ),
+      const SizedBox(height: 6.0),
       Row(
         children: [
           const Icon(Icons.star, color: Colors.amber),
@@ -208,47 +178,6 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
           const Text('Pages', style: subStyle),
         ],
       ),
-      const SizedBox(height: 6.0),
-      Row(
-        children: [
-          const Text('Category', style: style),
-          const SizedBox(width: 5.0),
-          Text(widget.book.category, style: style),
-        ],
-      ),
     ];
-    // return Container(
-    //   decoration: BoxDecoration(
-    //     color: Colors.grey[200],
-    //     borderRadius: const BorderRadius.all(Radius.circular(7.0)),
-    //   ),
-    //   child: Padding(
-    //     padding: const EdgeInsets.all(8.0),
-    //     child: Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //       children: [
-    //         Row(
-    //           children: [
-    //             const Icon(Icons.star, color: Colors.amber),
-    //             const SizedBox(width: 5.0),
-    //             Text(widget.book.ratings.toString(), style: style),
-    //           ],
-    //         ),
-    //         Text(widget.book.category, style: style),
-    //         Row(
-    //           children: [
-    //             Text('${widget.book.pageCount}', style: style),
-    //             const SizedBox(width: 5.0),
-    //             const Text('pages', style: subStyle),
-    //           ],
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-
-    //   // appBar: AppBar(
-    //   //   flexibleSpace: ,
-    //   // ),
-    // );
   }
 }
