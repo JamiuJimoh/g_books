@@ -1,72 +1,90 @@
 import 'package:flutter/material.dart';
-import 'package:g_books/presentation/screens/home/widgets/image_container.dart';
+
+import '../../../custom_widgets/image_container.dart';
 
 class BookContainer extends StatelessWidget {
-  const BookContainer({Key? key}) : super(key: key);
+  const BookContainer({
+    Key? key,
+    required this.onTap,
+    required this.title,
+    required this.author,
+    required this.category,
+    required this.rating,
+    required this.thumbnail
+  }) : super(key: key);
+  final Function() onTap;
+  final String title;
+  final String author;
+  final String category;
+  final String rating;
+  final String thumbnail;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      height: 180.0,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 8,
-            offset: Offset(1, 1),
-          ),
-        ],
-        borderRadius: BorderRadius.circular(
-          10.0,
-        ),
-      ),
-      child: Row(
-        children: [
-          const ImageContainer(),
-          const SizedBox(width: 20.0),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'by Joshua Becker',
-                  style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                        color: Colors.grey,
-                        fontSize: 12.0,
-                      ),
-                ),
-                const SizedBox(height: 15.0),
-                Text(
-                  'The More of Less',
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        fontSize: 16.5,
-                        fontWeight: FontWeight.w800,
-                      ),
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  children: [
-                    const Icon(Icons.star, color: Colors.amber, size: 18.0),
-                    const SizedBox(width: 7.0),
-                    Text(
-                      '4.5',
-                      style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                            color: Colors.grey,
-                            fontSize: 12.0,
-                          ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                const _BookCategoryChip(category: 'Computer'),
-              ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        height: 180.0,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 8,
+              offset: Offset(1, 1),
             ),
+          ],
+          borderRadius: BorderRadius.circular(
+            10.0,
           ),
-        ],
+        ),
+        child: Row(
+          children: [
+            ImageContainer(thumbnail: thumbnail),
+            const SizedBox(width: 20.0),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'by $author',
+                    style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                          color: Colors.grey,
+                          fontSize: 12.0,
+                        ),
+                  ),
+                  const SizedBox(height: 15.0),
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                          fontSize: 16.5,
+                          fontWeight: FontWeight.w800,
+                        ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, color: Colors.amber, size: 18.0),
+                      const SizedBox(width: 7.0),
+                      Text(
+                        rating,
+                        style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                              color: Colors.grey,
+                              fontSize: 12.0,
+                            ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10.0),
+                  _BookCategoryChip(category: category),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

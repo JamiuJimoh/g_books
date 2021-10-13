@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../../../models/book.dart';
+import '../book_details/book_details_page.dart';
 import 'widgets/book_container.dart';
-import '../../custom_widgets/show_exception_alert_dialog.dart';
-import '../../../services/auth.dart';
-import 'package:provider/provider.dart';
 import 'widgets/search_bar_text_field.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,18 +25,18 @@ class _HomePageState extends State<HomePage> {
     _textController.dispose();
   }
 
-  Future<void> _signOut(BuildContext context) async {
-    try {
-      final auth = Provider.of<AuthBase>(context, listen: false);
-      await auth.signOut();
-    } on FirebaseAuthException catch (e) {
-      showExceptionAlertDialog(
-        context,
-        title: 'Operation Failed',
-        exception: e,
-      );
-    }
-  }
+  // Future<void> _signOut(BuildContext context) async {
+  //   try {
+  //     final auth = Provider.of<AuthBase>(context, listen: false);
+  //     await auth.signOut();
+  //   } on FirebaseAuthException catch (e) {
+  //     showExceptionAlertDialog(
+  //       context,
+  //       title: 'Operation Failed',
+  //       exception: e,
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -83,19 +82,43 @@ class _HomePageState extends State<HomePage> {
                       ),
                 ),
                 const SizedBox(height: 16.0),
-                const BookContainer(),
+                BookContainer(
+                  author: _createBook().authors[0],
+                  title: _createBook().title,
+                  rating: _createBook().ratings.toString(),
+                  category: _createBook().category,
+                  thumbnail: _createBook().thumbnail,
+                  onTap: () =>
+                      BookDetailsPage.show(context, book: _createBook()),
+                ),
                 const SizedBox(height: 28.0),
-                const BookContainer(),
-                const SizedBox(height: 28.0),
-                const BookContainer(),
-                const SizedBox(height: 28.0),
-                const BookContainer(),
-                const SizedBox(height: 28.0),
+                // BookContainer(onTap: () => BookDetailsPage.show(context)),
+                // const SizedBox(height: 28.0),
+                // BookContainer(onTap: () => BookDetailsPage.show(context)),
+                // const SizedBox(height: 28.0),
+                // BookContainer(onTap: () => BookDetailsPage.show(context)),
+                // const SizedBox(height: 28.0),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Book _createBook() {
+    return Book(
+      bookId: 'bookId',
+      authors: ['Joshua Becker'],
+      title: 'The More of Less',
+      publishedDate: '2015-10',
+      description:
+          'Lorem ipsum a ojejfs  lksiolekn lfds laljldko eoj. L sdjl s fdf dfld djsd  sdf sdf d a dfdkl;a.ada.d jldjld;f d fld f df dfl; ad f;dlf jd sdf',
+      thumbnail:
+          'https://books.google.com/books/content?id=bzekBgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
+      pageCount: 369,
+      category: 'Computer',
+      ratings: 3.5,
     );
   }
 }
