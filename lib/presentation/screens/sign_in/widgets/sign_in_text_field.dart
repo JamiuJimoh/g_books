@@ -22,7 +22,6 @@ class SignInTextField extends CustomTextFormField {
           errorText: errorText,
           enabled: enabled,
           onChanged: onChanged,
-          fillColor: Colors.white,
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
           labelText: labelText,
