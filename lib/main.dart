@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.lightBlue[300],
           textTheme: GoogleFonts.latoTextTheme(
             Theme.of(context).textTheme,
+            
           ),
         ),
         home: const LandingPage(),

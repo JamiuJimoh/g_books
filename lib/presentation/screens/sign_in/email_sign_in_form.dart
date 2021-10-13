@@ -58,7 +58,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       await model.submit();
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => LandingPage()),
+        MaterialPageRoute(builder: (_) => const LandingPage()),
       );
       setState(() {
         _isLoading = false;

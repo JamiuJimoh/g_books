@@ -4,7 +4,6 @@ class CustomTextFormField extends StatelessWidget {
   final TextStyle? style;
   final TextInputAction? textInputAction;
   final Color? cursorColor;
-  final Color? fillColor;
   final int? maxLines;
   final double? borderRadius;
   final String? labelText;
@@ -20,6 +19,7 @@ class CustomTextFormField extends StatelessWidget {
   final void Function(String?)? onSaved;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
+  final InputBorder? focusedBorder;
   final bool obscureText;
   final bool enabled;
   final bool? autofocus;
@@ -29,9 +29,8 @@ class CustomTextFormField extends StatelessWidget {
     this.style,
     this.textInputAction,
     this.cursorColor,
-    this.fillColor,
     this.maxLines,
-    this.borderRadius = 5.0,
+    this.borderRadius = 30.0,
     this.labelText,
     this.hintText,
     this.initialValue,
@@ -45,6 +44,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onChanged,
     this.controller,
     this.validator,
+    this.focusedBorder,
     this.obscureText = false,
     this.enabled = true,
     this.autofocus = false,
@@ -64,8 +64,6 @@ class CustomTextFormField extends StatelessWidget {
       onSaved: onSaved,
       onChanged: onChanged,
       decoration: InputDecoration(
-        filled: true,
-        fillColor: fillColor,
         prefixIcon: prefixIcon,
         icon: icon,
         suffixIcon: suffixIcon,
@@ -75,6 +73,7 @@ class CustomTextFormField extends StatelessWidget {
         hintText: hintText,
         errorText: errorText,
         enabled: enabled,
+        focusedBorder: focusedBorder,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius!),
@@ -84,7 +83,8 @@ class CustomTextFormField extends StatelessWidget {
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius!),
           ),
-          borderSide: BorderSide(color: Theme.of(context).backgroundColor),
+          borderSide: borderSide ??
+              BorderSide(color: Theme.of(context).backgroundColor),
         ),
       ),
       validator: validator,
