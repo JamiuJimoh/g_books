@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import '../../../custom_widgets/image_container.dart';
 
 class BookContainer extends StatelessWidget {
-  const BookContainer({
-    Key? key,
-    required this.onTap,
-    required this.title,
-    required this.author,
-    required this.category,
-    required this.rating,
-    required this.thumbnail
-  }) : super(key: key);
+  const BookContainer(
+      {Key? key,
+      required this.onTap,
+      required this.title,
+      required this.author,
+      required this.category,
+      required this.rating,
+      required this.thumbnail})
+      : super(key: key);
   final Function() onTap;
   final String title;
   final String author;
@@ -25,6 +25,7 @@ class BookContainer extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(8.0),
+        margin: const EdgeInsets.only(bottom: 33.0),
         height: 180.0,
         width: double.infinity,
         decoration: BoxDecoration(
@@ -79,7 +80,8 @@ class BookContainer extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 10.0),
-                  _BookCategoryChip(category: category),
+                  if (category.isNotEmpty)
+                    _BookCategoryChip(category: category),
                 ],
               ),
             ),

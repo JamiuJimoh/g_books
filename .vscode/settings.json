@@ -1,6 +1,15 @@
 {
+    "rest-client.environmentVariables": {
+        "sandbox": {
+            "googleBooksUrl":"https://www.googleapis.com",
+        },
+        "production": {
+            
+        }
+    },
     "cSpell.words": [
         "autofocus",
+        "googleapis",
         "lato"
     ]
 }
