@@ -1,5 +1,3 @@
-// import 'dart:convert';
-
 class Book {
   final String bookId;
   final String authors;
@@ -54,9 +52,18 @@ class Book {
           ? ''
           : data['volumeInfo']['imageLinks']['thumbnail'];
     }
+
+    late String authors;
+    if (data['volumeInfo']['authors'] == null) {
+      authors = '';
+    } else {
+      authors = data['volumeInfo']['authors'].isEmpty
+          ? ''
+          : data['volumeInfo']['authors'][0];
+    }
     return Book(
       bookId: data['id'],
-      authors: data['volumeInfo']['authors'][0],
+      authors: authors,
       title: data['volumeInfo']['title'] ?? '',
       thumbnail: thumbnail,
       publishedDate: data['volumeInfo']['publishedDate'] ?? '',
@@ -67,19 +74,17 @@ class Book {
     );
   }
 
-  T _validatePath<T>(Map<String, dynamic> data, pathName) {
-    late T pathData;
-    if (data['volumeInfo']['$pathName'] == null) {
-      pathData = '' as T;
-    } else {
-      pathData = data['volumeInfo']['$pathName'].isEmpty
-          ? ''
-          : data['volumeInfo']['$pathName'][0];
-    }
-    return pathData;
+  factory Book.fromFirestoreMap(Map<String, dynamic> data) {
+    return Book(
+      bookId: data['bookId'],
+      authors: data['authors'],
+      title: data['title'],
+      thumbnail: data['thumbnail'],
+      publishedDate: data['publishedDate'],
+      description: data['description'],
+      pageCount: data['pageCount'],
+      category: data['category'],
+      ratings: data['ratings'],
+    );
   }
-
-  // String toJson() => json.encode(toMap());
-
-  // factory Book.fromJson(String source) => Book.fromMap(json.decode(source));
 }

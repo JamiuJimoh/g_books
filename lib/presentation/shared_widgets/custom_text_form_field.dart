@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 class CustomTextFormField extends StatelessWidget {
   final TextStyle? style;
   final TextInputAction? textInputAction;
-  final Color? cursorColor;
   final int? maxLines;
   final double? borderRadius;
   final String? labelText;
   final String? hintText;
-  final String? initialValue;
   final String? errorText;
   final Widget? prefixIcon;
   final Widget? icon;
@@ -22,18 +20,15 @@ class CustomTextFormField extends StatelessWidget {
   final InputBorder? focusedBorder;
   final bool obscureText;
   final bool enabled;
-  final bool? autofocus;
 
   const CustomTextFormField({
     Key? key,
     this.style,
     this.textInputAction,
-    this.cursorColor,
     this.maxLines,
     this.borderRadius = 30.0,
     this.labelText,
     this.hintText,
-    this.initialValue,
     this.errorText,
     this.prefixIcon,
     this.icon,
@@ -47,14 +42,10 @@ class CustomTextFormField extends StatelessWidget {
     this.focusedBorder,
     this.obscureText = false,
     this.enabled = true,
-    this.autofocus = false,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      initialValue: initialValue,
-      autofocus: autofocus!,
-      cursorColor: cursorColor,
       controller: controller,
       style: style,
       maxLines: maxLines,

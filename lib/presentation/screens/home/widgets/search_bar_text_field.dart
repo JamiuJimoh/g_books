@@ -1,33 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../../../custom_widgets/custom_text_form_field.dart';
-
-// class SearchBarTextField extends CustomTextFormField {
-// const SearchBarTextField({
-//   Key? key,
-//   required Widget prefixIcon,
-//   required TextEditingController controller,
-//   required void Function(String)? onChanged,
-//   required String hintText,
-// }) : super(
-//           key: key,
-//           borderRadius: 30.0,
-//           controller: controller,
-//           hintText: hintText,
-//           onChanged: onChanged,
-//           prefixIcon: prefixIcon,
-//         );
-// }
+import '../../../shared_widgets/custom_text_form_field.dart';
 
 class SearchBarTextField extends StatelessWidget {
   const SearchBarTextField({
     Key? key,
     required this.prefixIcon,
+    required this.suffixIcon,
     required this.controller,
     required this.onChanged,
     required this.hintText,
   }) : super(key: key);
   final Widget prefixIcon;
+  final Widget suffixIcon;
   final TextEditingController controller;
   final void Function(String)? onChanged;
   final String hintText;
@@ -54,6 +39,7 @@ class SearchBarTextField extends StatelessWidget {
         ),
         CustomTextFormField(
           prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
           controller: controller,
           onChanged: onChanged,
           hintText: hintText,

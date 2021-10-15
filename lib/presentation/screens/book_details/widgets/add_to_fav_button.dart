@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../custom_widgets/custom_elevated_button.dart';
+import '../../../shared_widgets/custom_elevated_button.dart';
 
 class AddToFavButton extends CustomElevatedButton {
   AddToFavButton({required VoidCallback onPressed})
       : super(
-          // key: key,
           onPressed: onPressed,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

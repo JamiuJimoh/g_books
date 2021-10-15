@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../custom_widgets/image_container.dart';
+import 'image_container.dart';
 
 class BookContainer extends StatelessWidget {
   const BookContainer(
       {Key? key,
       required this.onTap,
+      required this.id,
       required this.title,
       required this.author,
       required this.category,
@@ -13,6 +14,7 @@ class BookContainer extends StatelessWidget {
       required this.thumbnail})
       : super(key: key);
   final Function() onTap;
+  final String id;
   final String title;
   final String author;
   final String category;
@@ -43,7 +45,10 @@ class BookContainer extends StatelessWidget {
         ),
         child: Row(
           children: [
-            ImageContainer(thumbnail: thumbnail),
+            Hero(
+              tag: id,
+              child: ImageContainer(thumbnail: thumbnail),
+            ),
             const SizedBox(width: 20.0),
             Expanded(
               child: Column(
@@ -58,12 +63,16 @@ class BookContainer extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(height: 15.0),
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                          fontSize: 16.5,
-                          fontWeight: FontWeight.w800,
-                        ),
+                  SizedBox(
+                    height: 25.0,
+                    child: Text(
+                      title,
+                      overflow: TextOverflow.fade,
+                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                            fontSize: 16.5,
+                            fontWeight: FontWeight.w800,
+                          ),
+                    ),
                   ),
                   const SizedBox(height: 10.0),
                   Row(

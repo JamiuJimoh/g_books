@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../custom_widgets/custom_elevated_button.dart';
+import '../../../shared_widgets/custom_elevated_button.dart';
 
 class SocialSignInButton extends CustomElevatedButton {
   SocialSignInButton({
@@ -12,7 +12,6 @@ class SocialSignInButton extends CustomElevatedButton {
     required onPressed,
   }) : super(
           key: key,
-          
           buttonColor: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -26,7 +25,6 @@ class SocialSignInButton extends CustomElevatedButton {
             ),
           ),
           height: 48.0,
-          // width: double.infinity,
           onPressed: onPressed,
         );
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:g_books/services/auth.dart';
 
 import '../../../logic/validators.dart';
+import '../../../services/auth.dart';
 
 enum EmailSignInFormType { signIn, register }
 
