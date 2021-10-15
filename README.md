@@ -1,8 +1,10 @@
 # g_books
 
-A new Flutter project.
+g_books is a Flutter app based on the Google books API. The initial endpoint at the start of the app is https://www.googleapis.com/books/v1/volumes?q=peace. The query parameter 'q' is changed to the user's search term from the textfield. A debounce function is used to restrict flutter from sending a request on every key pressed.
 
-## Getting Started
+## Files Structure
+
+
 
 This project is a starting point for a Flutter application.
 
