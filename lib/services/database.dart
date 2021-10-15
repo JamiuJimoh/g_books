@@ -4,7 +4,7 @@ import 'api_endpoint.dart';
 import 'google_books_service.dart';
 
 abstract class Database {
-  Future<List<Book>> getBooks();
+  Future<List<Book>> getBooks(String? searchTerm);
 }
 
 class APIDatabase implements Database {
@@ -14,9 +14,9 @@ class APIDatabase implements Database {
   final _googleBooksService = GoogleBooksService.instance;
 
   @override
-  Future<List<Book>> getBooks() async {
+  Future<List<Book>> getBooks(String? searchTerm) async {
     return await _googleBooksService.getEndpointData<Book>(
-      url: api.moviesEndpointUri,
+      url: api.moviesEndpointUri(searchTerm),
       builder: (data) => Book.fromMap(data),
     );
   }

@@ -66,12 +66,17 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    widget.book.title,
-                                    style: const TextStyle(
-                                      color: Color(0xFF3F3F3F),
-                                      fontSize: 25.0,
-                                      fontWeight: FontWeight.w900,
+                                  SizedBox(
+                                    height: 90.0,
+                                    width: 180.0,
+                                    child: Text(
+                                      widget.book.title,
+                                      overflow: TextOverflow.fade,
+                                      style: const TextStyle(
+                                        color: Color(0xFF3F3F3F),
+                                        fontSize: 25.0,
+                                        fontWeight: FontWeight.w900,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(height: 10.0),
@@ -99,10 +104,13 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                 Positioned(
                   bottom: -(_height / 7),
                   right: _padVal,
-                  child: ImageContainer(
-                    thumbnail: widget.book.thumbnail,
-                    height: 230.0,
-                    width: 150.0,
+                  child: Hero(
+                    tag: widget.book.bookId,
+                    child: ImageContainer(
+                      thumbnail: widget.book.thumbnail,
+                      height: 230.0,
+                      width: 150.0,
+                    ),
                   ),
                 ),
               ],
