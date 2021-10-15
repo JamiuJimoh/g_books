@@ -19,7 +19,6 @@ class _ImageContainerState extends State<ImageContainer> {
   var _error = false;
   @override
   Widget build(BuildContext context) {
-    print(_error);
     return Container(
       width: widget.width,
       height: widget.height,

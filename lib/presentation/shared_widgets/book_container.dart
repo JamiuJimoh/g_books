@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../custom_widgets/image_container.dart';
+import 'image_container.dart';
 
 class BookContainer extends StatelessWidget {
   const BookContainer(

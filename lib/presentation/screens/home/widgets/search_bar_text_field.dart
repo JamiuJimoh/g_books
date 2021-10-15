@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../custom_widgets/custom_text_form_field.dart';
+import '../../../shared_widgets/custom_text_form_field.dart';
 
 class SearchBarTextField extends StatelessWidget {
   const SearchBarTextField({

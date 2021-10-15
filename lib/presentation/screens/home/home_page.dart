@@ -2,31 +2,25 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:g_books/presentation/custom_widgets/show_alert_dialog.dart';
-import 'package:g_books/presentation/custom_widgets/show_exception_alert_dialog.dart';
-import 'package:g_books/services/auth.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/book.dart';
-import '../../../services/api_endpoint.dart';
+import '../../../services/auth.dart';
 import '../../../services/database.dart';
+import '../../shared_widgets/book_container.dart';
+import '../../shared_widgets/show_alert_dialog.dart';
+import '../../shared_widgets/show_exception_alert_dialog.dart';
 import '../book_details/book_details_page.dart';
-import 'widgets/book_container.dart';
+import '../favorites/favorites_page.dart';
 import 'widgets/search_bar_text_field.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.database}) : super(key: key);
   final Database database;
 
-  static Widget create(BuildContext context, {required APIEndpoint api}) {
-    return Provider<Database>(
-      create: (context) => APIDatabase(api: api),
-      child: Consumer<Database>(
-        builder: (_, database, __) {
-          return HomePage(database: database);
-        },
-      ),
-    );
+  static Widget create(BuildContext context) {
+    final database = Provider.of<Database>(context, listen: false);
+    return HomePage(database: database);
   }
 
   @override
@@ -83,9 +77,21 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _confirmSignOut(context),
-          child: const Icon(Icons.exit_to_app),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              heroTag: UniqueKey(),
+              onPressed: () => FavoritesPage.show(context),
+              child: const Icon(Icons.favorite),
+            ),
+            const SizedBox(height: 10.0),
+            FloatingActionButton(
+              heroTag: UniqueKey(),
+              onPressed: () => _confirmSignOut(context),
+              child: const Icon(Icons.exit_to_app),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -150,19 +156,17 @@ class _HomePageState extends State<HomePage> {
                               onTap: () {
                                 FocusScope.of(context)
                                     .requestFocus(FocusNode());
-                                BookDetailsPage.show(context, book: books[i]);
+                                BookDetailsPage.show(
+                                  context,
+                                  book: books[i],
+                                  database: widget.database,
+                                );
                               },
                             ),
                           );
                         }
                       }
                       if (snapshot.hasError) {
-                        // showExceptionAlertDialog(
-                        //   context,
-                        //   title: 'Book Not Found',
-                        //   exception: Exception(
-                        //       'No books in the library matches your query'),
-                        // );
                         return const Center(
                           child: Text(
                             'No books in the library matches your query',

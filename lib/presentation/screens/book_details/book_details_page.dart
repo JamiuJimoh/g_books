@@ -1,16 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
 import '../../../models/book.dart';
-import '../../custom_widgets/image_container.dart';
+import '../../../services/database.dart';
+import '../../shared_widgets/image_container.dart';
+import '../../shared_widgets/show_exception_alert_dialog.dart';
 import 'widgets/add_to_fav_button.dart';
 
 class BookDetailsPage extends StatefulWidget {
-  const BookDetailsPage({Key? key, required this.book}) : super(key: key);
+  const BookDetailsPage({Key? key, required this.book, required this.database})
+      : super(key: key);
   final Book book;
+  final Database database;
 
-  static Future<void> show(BuildContext context, {required Book book}) async {
+  static Future<void> show(
+    BuildContext context, {
+    required Book book,
+    required Database database,
+  }) async {
     await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => BookDetailsPage(book: book),
+        builder: (_) => BookDetailsPage(book: book, database: database),
       ),
     );
   }
@@ -30,13 +40,32 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
     _height = MediaQuery.of(context).size.height * 0.4;
   }
 
+  Future<void> _addToFav() async {
+    try {
+      await widget.database.setBook(widget.book);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: const [
+              Icon(Icons.check_circle_outline, color: Colors.green),
+              SizedBox(width: 20.0),
+              Text('Book added to favorites'),
+            ],
+          ),
+        ),
+      );
+    } on FirebaseException catch (e) {
+      showExceptionAlertDialog(
+        context,
+        title: 'Operation failed',
+        exception: e,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 12.0),
-        child: AddToFavButton(onPressed: () => print('object')),
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -115,8 +144,6 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                 ),
               ],
             ),
-
-            // !=============================
             const SizedBox(height: 45.0),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -144,6 +171,9 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                       // fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const SizedBox(height: 20.0),
+                  AddToFavButton(onPressed: _addToFav),
+                  const SizedBox(height: 10.0),
                 ],
               ),
             ),
@@ -158,15 +188,6 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
       fontSize: 14.0,
     );
     return [
-      if (widget.book.category.isNotEmpty)
-        Row(
-          children: [
-            const Icon(Icons.category),
-            const SizedBox(width: 6.0),
-            Text(widget.book.category, style: subStyle),
-            const SizedBox(width: 4.0),
-          ],
-        ),
       const SizedBox(height: 6.0),
       Row(
         children: [
@@ -185,6 +206,15 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
           Text(widget.book.pageCount.toString(), style: subStyle),
           const SizedBox(width: 4.0),
           const Text('Pages', style: subStyle),
+        ],
+      ),
+      const SizedBox(height: 6.0),
+      Row(
+        children: [
+          const Icon(Icons.date_range),
+          const SizedBox(width: 6.0),
+          Text(widget.book.publishedDate, style: subStyle),
+          const SizedBox(width: 4.0),
         ],
       ),
     ];

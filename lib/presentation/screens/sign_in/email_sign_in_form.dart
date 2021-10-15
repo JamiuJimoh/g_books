@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../landing_page.dart';
 import '../../../services/auth.dart';
-import '../../custom_widgets/show_exception_alert_dialog.dart';
+import '../../shared_widgets/show_exception_alert_dialog.dart';
 import 'email_sign_in_model.dart';
 import 'widgets/form_submit_button.dart';
 import 'widgets/sign_in_text_field.dart';
