@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'presentation/screens/home/home_page.dart';
 import 'presentation/screens/sign_in/sign_in_page.dart';
+import 'services/api_endpoint.dart';
 import 'services/auth.dart';
 
 class LandingPage extends StatefulWidget {
@@ -31,7 +32,12 @@ class _LandingPageState extends State<LandingPage> {
           //   create: (_) => FireStoreDatabase(uid: user.uid),
           //   child: HomePage.create(context),
           // );
-          return HomePage.create(context);
+          return Provider<APIEndpoint>(
+            create: (_) => APIEndpoint(),
+            child: Consumer<APIEndpoint>(
+              builder: (_, api, __) => HomePage.create(context, api: api),
+            ),
+          );
         }
         return const Scaffold(
           body: Center(

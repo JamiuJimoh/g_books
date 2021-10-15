@@ -76,7 +76,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                                   ),
                                   const SizedBox(height: 10.0),
                                   Text(
-                                    'by ${widget.book.authors[0]}',
+                                    'by ${widget.book.authors}',
                                     style: const TextStyle(
                                       color: Colors.blueAccent,
                                       fontSize: 15.0,
@@ -150,14 +150,15 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
       fontSize: 14.0,
     );
     return [
-      Row(
-        children: [
-          const Icon(Icons.category),
-          const SizedBox(width: 6.0),
-          Text(widget.book.category, style: subStyle),
-          const SizedBox(width: 4.0),
-        ],
-      ),
+      if (widget.book.category.isNotEmpty)
+        Row(
+          children: [
+            const Icon(Icons.category),
+            const SizedBox(width: 6.0),
+            Text(widget.book.category, style: subStyle),
+            const SizedBox(width: 4.0),
+          ],
+        ),
       const SizedBox(height: 6.0),
       Row(
         children: [

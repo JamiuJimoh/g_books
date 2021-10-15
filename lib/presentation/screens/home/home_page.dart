@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:g_books/services/api_endpoint.dart';
+import 'package:provider/provider.dart';
 
 import '../../../models/book.dart';
+import '../../../services/database.dart';
 import '../book_details/book_details_page.dart';
 import 'widgets/book_container.dart';
 import 'widgets/search_bar_text_field.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key, required this.database}) : super(key: key);
+  final Database database;
 
-  static Widget create(BuildContext context) {
-    return const HomePage();
+  static Widget create(BuildContext context, {required APIEndpoint api}) {
+    return Provider<Database>(
+      create: (context) => APIDatabase(api: api),
+      child: Consumer<Database>(
+        builder: (_, database, __) {
+          return HomePage(database: database);
+        },
+      ),
+    );
   }
 
   @override
@@ -18,7 +29,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _textController = TextEditingController();
-
   @override
   void dispose() {
     super.dispose();
@@ -37,6 +47,7 @@ class _HomePageState extends State<HomePage> {
   //     );
   //   }
   // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -82,43 +93,47 @@ class _HomePageState extends State<HomePage> {
                       ),
                 ),
                 const SizedBox(height: 16.0),
-                BookContainer(
-                  author: _createBook().authors[0],
-                  title: _createBook().title,
-                  rating: _createBook().ratings.toString(),
-                  category: _createBook().category,
-                  thumbnail: _createBook().thumbnail,
-                  onTap: () =>
-                      BookDetailsPage.show(context, book: _createBook()),
-                ),
+                FutureBuilder<List<Book>>(
+                    future: widget.database.getBooks(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasData) {
+                        final books = snapshot.data!;
+                        if (books.isNotEmpty) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: books.length,
+                            itemBuilder: (_, i) => BookContainer(
+                              author: books[i].authors,
+                              title: books[i].title,
+                              rating: books[i].ratings,
+                              category: books[i].category,
+                              thumbnail: books[i].thumbnail,
+                              onTap: () =>
+                                  BookDetailsPage.show(context, book: books[i]),
+                            ),
+                          );
+                        }
+                      }
+                      if (snapshot.hasError) {
+                        print('==============');
+                        print(snapshot.error);
+                      }
+                      return Center(
+                          child: Text(
+                        snapshot.error.toString(),
+                        style: const TextStyle(color: Colors.black),
+                      ));
+                    }),
                 const SizedBox(height: 28.0),
-                // BookContainer(onTap: () => BookDetailsPage.show(context)),
-                // const SizedBox(height: 28.0),
-                // BookContainer(onTap: () => BookDetailsPage.show(context)),
-                // const SizedBox(height: 28.0),
-                // BookContainer(onTap: () => BookDetailsPage.show(context)),
-                // const SizedBox(height: 28.0),
               ],
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Book _createBook() {
-    return Book(
-      bookId: 'bookId',
-      authors: ['Joshua Becker'],
-      title: 'The More of Less',
-      publishedDate: '2015-10',
-      description:
-          'Lorem ipsum a ojejfs  lksiolekn lfds laljldko eoj. L sdjl s fdf dfld djsd  sdf sdf d a dfdkl;a.ada.d jldjld;f d fld f df dfl; ad f;dlf jd sdf',
-      thumbnail:
-          'https://books.google.com/books/content?id=bzekBgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
-      pageCount: 369,
-      category: 'Computer',
-      ratings: 3.5,
     );
   }
 }
