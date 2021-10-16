@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:g_books/presentation/shared_widgets/show_exception_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/book.dart';
@@ -15,6 +17,18 @@ class FavoritesPage extends StatelessWidget {
     await Navigator.of(context).push(MaterialPageRoute(
       builder: (_) => FavoritesPage(database: database),
     ));
+  }
+
+  Future<void> _delete(BuildContext context, Book book) async {
+    try {
+      await database.deleteBook(book);
+    } on FirebaseFirestore catch (e) {
+      showExceptionAlertDialog(
+        context,
+        title: 'Operation failed',
+        exception: Exception(e),
+      );
+    }
   }
 
   @override
@@ -39,20 +53,35 @@ class FavoritesPage extends StatelessWidget {
                 if (books.isNotEmpty) {
                   return ListView.builder(
                     itemCount: books.length,
-                    itemBuilder: (_, i) => BookContainer(
-                      id: books[i].bookId,
-                      author: books[i].authors,
-                      title: books[i].title,
-                      rating: books[i].ratings,
-                      category: books[i].category,
-                      thumbnail: books[i].thumbnail,
-                      onTap: () {
-                        BookDetailsPage.show(
-                          context,
-                          book: books[i],
-                          database: database,
-                        );
-                      },
+                    itemBuilder: (_, i) => Dismissible(
+                      key: UniqueKey(),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                          margin: const EdgeInsets.only(bottom: 33.0),
+                          color: Colors.red,
+                          child: const Align(
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 20.0),
+                                child: Icon(Icons.delete,
+                                    size: 40.0, color: Colors.white),
+                              ),
+                              alignment: Alignment.centerRight)),
+                      onDismissed: (_) => _delete(context, books[i]),
+                      child: BookContainer(
+                        id: books[i].bookId,
+                        author: books[i].authors,
+                        title: books[i].title,
+                        rating: books[i].ratings,
+                        category: books[i].category,
+                        thumbnail: books[i].thumbnail,
+                        onTap: () {
+                          BookDetailsPage.show(
+                            context,
+                            book: books[i],
+                            database: database,
+                          );
+                        },
+                      ),
                     ),
                   );
                 } else {

@@ -23,4 +23,9 @@ class FirestoreService {
     final reference = FirebaseFirestore.instance.doc(path);
     await reference.set(data);
   }
+
+  Future<void> deleteData({required String path}) async {
+    final reference = FirebaseFirestore.instance.doc(path);
+    await reference.delete();
+  }
 }

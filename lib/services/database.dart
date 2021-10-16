@@ -7,6 +7,7 @@ abstract class Database {
   Future<List<Book>> getBooks(String? searchTerm);
   Stream<List<Book>> booksStream();
   Future<void> setBook(Book book);
+  Future<void> deleteBook(Book book);
 }
 
 class APIDatabase implements Database {
@@ -37,5 +38,10 @@ class APIDatabase implements Database {
   Future<void> setBook(Book book) async => await _firestoreService.setData(
         path: APIEndpoint.book(uid, book.bookId),
         data: book.toMap(),
+      );
+
+  @override
+  Future<void> deleteBook(Book book) => _firestoreService.deleteData(
+        path: APIEndpoint.book(uid, book.bookId),
       );
 }
