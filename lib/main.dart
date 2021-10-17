@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return Provider<AuthBase>(
       create: (context) => Auth(),
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Google Books App',
         theme: ThemeData(
           primaryColor: Colors.lightBlue[300],
           appBarTheme: const AppBarTheme(
